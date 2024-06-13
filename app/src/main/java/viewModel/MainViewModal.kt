@@ -96,5 +96,11 @@ class MainViewModel : ViewModel() {
 //        }
     }
 
+    fun getCurrentUser(){
+        viewModelScope.launch {
+            repository.getCurrentUser()
+        }
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package viewModel
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -14,6 +15,7 @@ import screen.SignUpScreen
 
 @Composable
 fun Navigation(
+    messageViewModel: MessageViewModel,
     viewModel: MainViewModel,
     navController: NavController
 ){
@@ -37,7 +39,10 @@ fun Navigation(
 
             val roomId: String = it
                 .arguments?.getString("roomId") ?: ""
-            ChatScreen(navController = navController, roomId = roomId)
+            Log.d("roomId", roomId)
+            messageViewModel.setRoomId(roomId)
+            messageViewModel.fetchMessages()
+            ChatScreen(navController = navController, roomId = roomId, viewModel = viewModel, messageViewModel = messageViewModel)
 
         }
     }

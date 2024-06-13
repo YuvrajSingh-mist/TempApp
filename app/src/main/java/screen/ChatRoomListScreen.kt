@@ -47,7 +47,6 @@ fun ChatRoomListScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Display a list of chat rooms
         LazyColumn {
 
             items(rooms.value){
@@ -133,7 +132,6 @@ fun RoomItem(room: ChatRoomListData, navController: NavController) {
         Text(text = room.name, fontSize = 16.sp, fontWeight = FontWeight.Normal)
         OutlinedButton(
             onClick = {
-            //TODO Navigate to different chat screen
                 navController.navigate(Screen.ChatScreen.route + "/${room.id}")
             }
         ) {

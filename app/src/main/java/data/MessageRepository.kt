@@ -1,5 +1,6 @@
 package data
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import eu.tutorials.chatroomapp.data.Message
@@ -26,12 +27,21 @@ class MessageRepository(
             .orderBy("timestamp")
             .addSnapshotListener { querySnapshot, _ ->
                 querySnapshot?.let {
-                    trySend(it.documents.map { doc ->
-                        doc.toObject(Message::class.java)!!.copy()
-                    }).isSuccess
+                    Log.d("getChatMessages", "QuerySnapshot: $querySnapshot") // Log querySnapshot
+                    val messages = it.documents.mapNotNull { doc ->
+                        try {
+                            doc.toObject(Message::class.java)!!.copy()
+                        } catch (e: Exception) {
+                            Log.e("getChatMessages", "Error mapping document", e)
+                            null
+                        }
+                    }
+                    Log.d("getChatMessages", "Mapped Messages: $messages") // Log mapped messages
+                    trySend(messages).isSuccess
                 }
             }
 
         awaitClose { subscription.remove() }
     }
+
 }

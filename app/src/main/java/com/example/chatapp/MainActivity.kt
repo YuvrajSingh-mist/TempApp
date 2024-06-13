@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.chatapp.ui.theme.ChatAppTheme
 import viewModel.MainViewModel
+import viewModel.MessageViewModel
 import viewModel.Navigation
 
 class MainActivity : ComponentActivity() {
@@ -25,9 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val modelViewModel : MainViewModel = viewModel()
+            val messageViewModel : MessageViewModel = viewModel()
             ChatAppTheme {
               setContent { 
-                  Navigation(viewModel = modelViewModel, navController)
+                  Navigation(viewModel = modelViewModel, messageViewModel = messageViewModel, navController = navController)
               }
             }
         }
