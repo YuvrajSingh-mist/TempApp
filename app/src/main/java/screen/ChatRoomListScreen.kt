@@ -1,5 +1,6 @@
 package screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,24 +12,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import data.ChatRoomListData
 import viewModel.MainViewModel
 
 @Composable
 fun ChatRoomListScreen(
+    navController: NavController,
     viewModel: MainViewModel
 ) {
-
+//    viewModelSc
+    viewModel.loadRooms()
+    val rooms = viewModel.rooms.observeAsState(emptyList())
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,6 +50,11 @@ fun ChatRoomListScreen(
         // Display a list of chat rooms
         LazyColumn {
 
+            items(rooms.value){
+                item ->
+                RoomItem(item, navController = navController)
+                Log.d("Room Items", "ChatRoomListScreen: ${item.name}")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -89,8 +100,10 @@ fun ShowRoomCreationDialogBox(viewModel: MainViewModel) {
                         onClick = {
                             if (viewModel.roomName.value.isNotBlank()) {
                                 viewModel.showDialogUpdateState(false)
-
+                                viewModel.createRoom(viewModel.roomName.value)
+                                viewModel.loadRooms()
                             }
+
                         }
                     ) {
                         Text("Add")
@@ -108,4 +121,24 @@ fun ShowRoomCreationDialogBox(viewModel: MainViewModel) {
     }
 }
 
+
+@Composable
+fun RoomItem(room: ChatRoomListData, navController: NavController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = room.name, fontSize = 16.sp, fontWeight = FontWeight.Normal)
+        OutlinedButton(
+            onClick = {
+            //TODO Navigate to different chat screen
+                navController.navigate(Screen.ChatScreen.route + "/${room.id}")
+            }
+        ) {
+            Text("Join")
+        }
+    }
+}
 

@@ -1,4 +1,5 @@
 package screen
+import android.util.Log
 import data.Result
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -69,6 +70,7 @@ fun LoginScreen(
         Button(
             onClick = {
                 viewModel.signIn(email, password)
+                Log.d("LoginScreen", "LoginScreen: $result")
                 when (result) {
                     is Result.Success->{
                         OnSignInSuccess()

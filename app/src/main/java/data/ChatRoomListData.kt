@@ -1,6 +1,6 @@
 package data
 
 data class ChatRoomListData(
-    val id: String,
-    val name: String
+    val id: String = "",
+    val name: String = ""
 )
