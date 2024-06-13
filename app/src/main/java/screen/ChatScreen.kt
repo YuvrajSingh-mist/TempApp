@@ -88,10 +88,9 @@ fun ChatScreen(
 
             IconButton(
                 onClick = {
-
 //                    messageViewModel.fetchMessages()
 
-//                    messageViewModel.fetchCurrentUser()
+                    messageViewModel.fetchCurrentUser()
                     val currentUserData = messageViewModel.currentUser.value
 //                    Log.d("UserData", "ChatScreen: $currentUserData")
                     if (currentUserData != null) {

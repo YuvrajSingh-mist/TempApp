@@ -22,7 +22,7 @@ class MessageViewModel : ViewModel(){
     init {
         messageRepository = MessageRepository(FirebaseAuth.getInstance(), Injection.instance())
         viewRepository = ViewRepository(FirebaseAuth.getInstance(), Injection.instance())
-        fetchCurrentUser()
+//        fetchCurrentUser()
     }
     private val _currentUser : MutableLiveData<Users> = MutableLiveData()
     private val _roomId: MutableLiveData<String> = MutableLiveData()
